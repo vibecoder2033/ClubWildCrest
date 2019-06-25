@@ -341,6 +341,32 @@ namespace WildCrest.Controllers.SuperAdmin
                     var billingDetailsData = context.tbl_MembersBillingDetails.FirstOrDefault(f => f.UserID == id);
                     if (billingDetailsData != null)
                     {
+                       var billmode =context.tbl_MemberBillingMode.Where(x => x.Mem_Bill_Number == billingDetailsData.ID).ToList();
+                        if (billmode != null && billmode.Count > 0)
+                        {
+                            foreach (var Data in billmode)
+                            {
+                                switch (Data.Mode_Of_Pay)
+                                {
+                                    case "Cash":
+                                        prf.Cash_Payment = Data.Amout.ToString();
+                                        break;
+
+                                    case "Paytm":
+                                        prf.Paytm_Payment = Data.Amout.ToString(); ;
+                                        break;
+
+                                    case "Card":
+                                        prf.Card_Payment = Data.Amout.ToString(); ;
+                                        break;
+                                    case "Cheque":
+                                        prf.Cheque_Payment = Data.Amout.ToString(); ;
+                                        break;
+
+                                }
+
+                            }
+                        }
                         BillingDetails bill = new BillingDetails();
                         bill.Mode_Of_Payment = billingDetailsData.Mode_Of_Payment;
                         bill.Amount_Paid = billingDetailsData.TotalAmount;
@@ -446,6 +472,32 @@ namespace WildCrest.Controllers.SuperAdmin
                     var billingDetailsData = context.tbl_MembersBillingDetails.FirstOrDefault(f => f.UserID == id);
                     if (billingDetailsData != null)
                     {
+                        var billmode = context.tbl_MemberBillingMode.Where(x => x.Mem_Bill_Number == billingDetailsData.ID).ToList();
+                        if (billmode != null && billmode.Count > 0)
+                        {
+                            foreach (var Data in billmode)
+                            {
+                                switch (Data.Mode_Of_Pay)
+                                {
+                                    case "Cash":
+                                        prf.Cash_Payment = Data.Amout.ToString();
+                                        break;
+
+                                    case "Paytm":
+                                        prf.Paytm_Payment = Data.Amout.ToString(); ;
+                                        break;
+
+                                    case "Card":
+                                        prf.Card_Payment = Data.Amout.ToString(); ;
+                                        break;
+                                    case "Cheque":
+                                        prf.Cheque_Payment = Data.Amout.ToString(); ;
+                                        break;
+
+                                }
+
+                            }
+                        }
                         BillingDetails bill = new BillingDetails();
                         bill.Mode_Of_Payment = billingDetailsData.Mode_Of_Payment;
                         bill.Amount_Paid = billingDetailsData.TotalAmount;
@@ -867,10 +919,26 @@ namespace WildCrest.Controllers.SuperAdmin
                 tbl_MembersBillingDetails bill = new tbl_MembersBillingDetails();
 
                 var billingDetails = JsonConvert.DeserializeObject<BillingDetails>(newMember.billingDetailsInJson);
+                if (billingDetails.paymentModeCash == null)
+                {
+                    billingDetails.paymentModeCash = 0.0;
+                }
+                if (billingDetails.paymentModeCard == null)
+                {
+                    billingDetails.paymentModeCard = 0.0;
+                }
+                if (billingDetails.paymentModePaytm == null)
+                {
+                    billingDetails.paymentModePaytm = 0.0;
+                }
+                if (billingDetails.paymentModeCheque == null)
+                {
+                    billingDetails.paymentModeCheque = 0.0;
+                }
 
-
-                bill.Mode_Of_Payment = billingDetails.Mode_Of_Payment;
-                bill.TotalAmount = billingDetails.Amount_Paid;
+                bill.Mode_Of_Payment = null;
+                var total = billingDetails.paymentModeCash + billingDetails.paymentModeCard + billingDetails.paymentModePaytm + billingDetails.paymentModeCheque;
+                bill.TotalAmount = Math.Round(Convert.ToDouble(total), 2);
 
                 if (billingDetails.Cheque_No != "" && billingDetails.Cheque_No != null)
                     bill.Cheque_No = billingDetails.Cheque_No;
@@ -888,6 +956,43 @@ namespace WildCrest.Controllers.SuperAdmin
 
                 context.tbl_MembersBillingDetails.Add(bill);
                 context.SaveChanges();
+
+                if (billingDetails.paymentModeCash > 0)
+                {
+                    tbl_MemberBillingMode model = new tbl_MemberBillingMode();
+                    model.Mem_Bill_Number = bill.ID;
+                    model.Amout = billingDetails.paymentModeCash;
+                    model.Mode_Of_Pay = "Cash";
+                    context.tbl_MemberBillingMode.Add(model);
+                    context.SaveChanges();
+                }
+                if (billingDetails.paymentModePaytm > 0)
+                {
+                    tbl_MemberBillingMode model = new tbl_MemberBillingMode();
+                    model.Mem_Bill_Number = bill.ID;
+                    model.Amout = billingDetails.paymentModePaytm;
+                    model.Mode_Of_Pay = "Paytm";
+                    context.tbl_MemberBillingMode.Add(model);
+                    context.SaveChanges();
+                }
+                if (billingDetails.paymentModeCard > 0)
+                {
+                    tbl_MemberBillingMode model = new tbl_MemberBillingMode();
+                    model.Mem_Bill_Number = bill.ID;
+                    model.Amout = billingDetails.paymentModeCard;
+                    model.Mode_Of_Pay = "Card";
+                    context.tbl_MemberBillingMode.Add(model);
+                    context.SaveChanges();
+                }
+                if (billingDetails.paymentModeCheque > 0)
+                {
+                    tbl_MemberBillingMode model = new tbl_MemberBillingMode();
+                    model.Mem_Bill_Number = bill.ID;
+                    model.Amout = billingDetails.paymentModeCheque;
+                    model.Mode_Of_Pay = "Cheque";
+                    context.tbl_MemberBillingMode.Add(model);
+                    context.SaveChanges();
+                }
 
                 //===================================================================================
 

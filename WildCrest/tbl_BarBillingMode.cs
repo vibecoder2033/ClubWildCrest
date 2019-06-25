@@ -16,7 +16,7 @@ namespace WildCrest
     {
         public int ID { get; set; }
         public Nullable<int> Bar_Bill_Number { get; set; }
-        public string Amount { get; set; }
+        public Nullable<double> Amount { get; set; }
         public string Mode_Of_Pay { get; set; }
     }
 }

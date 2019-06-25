@@ -28,7 +28,6 @@ namespace WildCrest
             throw new UnintentionalCodeFirstException();
         }
     
-        public DbSet<sysdiagram> sysdiagrams { get; set; }
         public DbSet<tbl_BarBillingDetailsWithBillNo> tbl_BarBillingDetailsWithBillNo { get; set; }
         public DbSet<tbl_BarBillingSection> tbl_BarBillingSection { get; set; }
         public DbSet<tbl_BarInventory> tbl_BarInventory { get; set; }
@@ -89,6 +88,9 @@ namespace WildCrest
         public DbSet<tbl_EntryMember_Billing> tbl_EntryMember_Billing { get; set; }
         public DbSet<tbl_BillingMode> tbl_BillingMode { get; set; }
         public DbSet<tbl_BarBillingMode> tbl_BarBillingMode { get; set; }
+        public DbSet<tbl_WineBillingMode> tbl_WineBillingMode { get; set; }
+        public DbSet<tbl_RoomBillingMode> tbl_RoomBillingMode { get; set; }
+        public DbSet<tbl_MemberBillingMode> tbl_MemberBillingMode { get; set; }
     
         public virtual int checkAvailabilityOfRooms(string checkin, string checkout)
         {

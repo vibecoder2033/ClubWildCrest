@@ -5,16 +5,6 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="virkcorp_adminModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="principal_id" Type="int" Nullable="false" />
-          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="version" Type="int" />
-          <Property Name="definition" Type="varbinary(max)" />
-        </EntityType>
         <EntityType Name="tbl_BarBillingDetailsWithBillNo">
           <Key>
             <PropertyRef Name="ID" />
@@ -34,7 +24,7 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Bar_Bill_Number" Type="int" />
-          <Property Name="Amount" Type="varchar" MaxLength="500" />
+          <Property Name="Amount" Type="float" />
           <Property Name="Mode_Of_Pay" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="tbl_BarBillingSection">
@@ -116,7 +106,7 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="tbl_Bill_ID" Type="int" />
-          <Property Name="Amount" Type="varchar" MaxLength="500" />
+          <Property Name="Amount" Type="float" />
           <Property Name="Mode_Of_Pay" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="tbl_BookingTable">
@@ -278,6 +268,15 @@
           <Property Name="BillNo" Type="int" />
           <Property Name="GST_NonGST_Bill" Type="varchar" MaxLength="50" />
           <Property Name="IsBuffetFood" Type="bit" />
+        </EntityType>
+        <EntityType Name="tbl_MemberBillingMode">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Mem_Bill_Number" Type="int" />
+          <Property Name="Amout" Type="float" />
+          <Property Name="Mode_Of_Pay" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="tbl_MembersBillingDetails">
           <Key>
@@ -472,7 +471,7 @@
           <Property Name="Party_Name" Type="varchar" MaxLength="500" />
           <Property Name="Party_Owner" Type="varchar" MaxLength="300" />
           <Property Name="Phone_No" Type="varchar" MaxLength="30" />
-          <Property Name="Description" Type="varchar(max)" />
+          <Property Name="Description" Type="varchar(max)" Nullable="false" />
           <Property Name="Total_Member" Type="varchar" MaxLength="50" />
           <Property Name="Price" Type="varchar" MaxLength="500" />
           <Property Name="Total_Amount" Type="varchar" MaxLength="500" />
@@ -573,6 +572,15 @@
           <Property Name="Discount" Type="int" />
           <Property Name="AdvancedPayment" Type="float" />
           <Property Name="AmtToBePaid" Type="float" />
+        </EntityType>
+        <EntityType Name="tbl_RoomBillingMode">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Room_Bill_Number" Type="int" />
+          <Property Name="Amout" Type="float" />
+          <Property Name="Mode_Of_Pay" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="tbl_RoomBooking">
           <Key>
@@ -732,6 +740,15 @@
           <Property Name="OldQuantity" Type="float" />
           <Property Name="QtyUpdatedDate" Type="varchar(max)" />
           <Property Name="QtyUpdatedBy" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="tbl_WineBillingMode">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Wine_Bill_Number" Type="int" />
+          <Property Name="Amount" Type="float" />
+          <Property Name="Mode_Of_Pay" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="tbl_WineBillingSection">
           <Key>
@@ -986,10 +1003,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Function Name="checkAvailabilityOfRooms" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="checkin" Type="varchar" Mode="In" />
-          <Parameter Name="checkout" Type="varchar" Mode="In" />
-        </Function>
         <Function Name="Members_Checked_Out_Rooms" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="checkin" Type="varchar" Mode="In" />
           <Parameter Name="checkout" Type="varchar" Mode="In" />
@@ -999,7 +1012,6 @@
           <Parameter Name="membershipID" Type="int" Mode="In" />
         </Function>
         <EntityContainer Name="virkcorp_adminModelStoreContainer">
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_BarBillingDetailsWithBillNo" EntityType="Self.tbl_BarBillingDetailsWithBillNo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_BarBillingMode" EntityType="Self.tbl_BarBillingMode" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_BarBillingSection" EntityType="Self.tbl_BarBillingSection" Schema="dbo" store:Type="Tables" />
@@ -1022,6 +1034,7 @@
           <EntitySet Name="tbl_Groups" EntityType="Self.tbl_Groups" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_Inventory" EntityType="Self.tbl_Inventory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_InventoryUsage" EntityType="Self.tbl_InventoryUsage" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_MemberBillingMode" EntityType="Self.tbl_MemberBillingMode" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_MembersBillingDetails" EntityType="Self.tbl_MembersBillingDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_MembersDocs" EntityType="Self.tbl_MembersDocs" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_MembershipPlans" EntityType="Self.tbl_MembershipPlans" Schema="dbo" store:Type="Tables" />
@@ -1043,6 +1056,7 @@
           <EntitySet Name="tbl_Profile" EntityType="Self.tbl_Profile" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_Roles" EntityType="Self.tbl_Roles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_RoomBilling" EntityType="Self.tbl_RoomBilling" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_RoomBillingMode" EntityType="Self.tbl_RoomBillingMode" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_RoomBooking" EntityType="Self.tbl_RoomBooking" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_RoomBooking_Details" EntityType="Self.tbl_RoomBooking_Details" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_Rooms" EntityType="Self.tbl_Rooms" Schema="dbo" store:Type="Tables" />
@@ -1056,6 +1070,7 @@
           <EntitySet Name="tbl_Voucher" EntityType="Self.tbl_Voucher" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_VoucherUsedByUser" EntityType="Self.tbl_VoucherUsedByUser" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_WineBillingDetailsWithBillNo" EntityType="Self.tbl_WineBillingDetailsWithBillNo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_WineBillingMode" EntityType="Self.tbl_WineBillingMode" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_WineBillingSection" EntityType="Self.tbl_WineBillingSection" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_WineInventory" EntityType="Self.tbl_WineInventory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_WineInventoryUsage" EntityType="Self.tbl_WineInventoryUsage" Schema="dbo" store:Type="Tables" />
@@ -1130,7 +1145,6 @@
     <edmx:ConceptualModels>
       <Schema Namespace="virkcorp_adminModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="ClubWildCrestEntities" p1:LazyLoadingEnabled="true">
-          <EntitySet Name="sysdiagrams" EntityType="virkcorp_adminModel.sysdiagram" />
           <EntitySet Name="tbl_BarBillingDetailsWithBillNo" EntityType="virkcorp_adminModel.tbl_BarBillingDetailsWithBillNo" />
           <EntitySet Name="tbl_BarBillingSection" EntityType="virkcorp_adminModel.tbl_BarBillingSection" />
           <EntitySet Name="tbl_BarInventory" EntityType="virkcorp_adminModel.tbl_BarInventory" />
@@ -1267,17 +1281,10 @@
           <EntitySet Name="tbl_EntryMember_Billing" EntityType="virkcorp_adminModel.tbl_EntryMember_Billing" />
           <EntitySet Name="tbl_BillingMode" EntityType="virkcorp_adminModel.tbl_BillingMode" />
           <EntitySet Name="tbl_BarBillingMode" EntityType="virkcorp_adminModel.tbl_BarBillingMode" />
+          <EntitySet Name="tbl_WineBillingMode" EntityType="virkcorp_adminModel.tbl_WineBillingMode" />
+          <EntitySet Name="tbl_RoomBillingMode" EntityType="virkcorp_adminModel.tbl_RoomBillingMode" />
+          <EntitySet Name="tbl_MemberBillingMode" EntityType="virkcorp_adminModel.tbl_MemberBillingMode" />
         </EntityContainer>
-        <EntityType Name="sysdiagram">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="String" Nullable="false" MaxLength="128" Unicode="true" FixedLength="false" />
-          <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="Int32" />
-          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
-        </EntityType>
         <EntityType Name="tbl_BarBillingDetailsWithBillNo">
           <Key>
             <PropertyRef Name="ID" />
@@ -1699,7 +1706,7 @@
           <Property Name="Party_Name" Type="String" MaxLength="500" Unicode="false" FixedLength="false" />
           <Property Name="Party_Owner" Type="String" MaxLength="300" Unicode="false" FixedLength="false" />
           <Property Name="Phone_No" Type="String" MaxLength="30" Unicode="false" FixedLength="false" />
-          <Property Name="Description" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" Nullable="false" />
           <Property Name="Total_Member" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
           <Property Name="Price" Type="String" MaxLength="500" Unicode="false" FixedLength="false" />
           <Property Name="Total_Amount" Type="String" MaxLength="500" Unicode="false" FixedLength="false" />
@@ -2284,7 +2291,7 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="tbl_Bill_ID" Type="Int32" />
-          <Property Name="Amount" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Amount" Type="Double" />
           <Property Name="Mode_Of_Pay" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="tbl_BarBillingMode">
@@ -2293,7 +2300,34 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Bar_Bill_Number" Type="Int32" />
-          <Property Name="Amount" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Amount" Type="Double" />
+          <Property Name="Mode_Of_Pay" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tbl_WineBillingMode">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Wine_Bill_Number" Type="Int32" />
+          <Property Name="Amount" Type="Double" />
+          <Property Name="Mode_Of_Pay" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tbl_RoomBillingMode">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Room_Bill_Number" Type="Int32" />
+          <Property Name="Amout" Type="Double" />
+          <Property Name="Mode_Of_Pay" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tbl_MemberBillingMode">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Mem_Bill_Number" Type="Int32" />
+          <Property Name="Amout" Type="Double" />
           <Property Name="Mode_Of_Pay" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
@@ -2302,17 +2336,6 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="virkcorp_adminModelStoreContainer" CdmEntityContainer="ClubWildCrestEntities">
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="virkcorp_adminModel.sysdiagram">
-              <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="definition" ColumnName="definition" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="tbl_BarBillingDetailsWithBillNo">
             <EntityTypeMapping TypeName="virkcorp_adminModel.tbl_BarBillingDetailsWithBillNo">
               <MappingFragment StoreEntitySet="tbl_BarBillingDetailsWithBillNo">
@@ -3103,7 +3126,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="checkAvailabilityOfRooms" FunctionName="virkcorp_adminModel.Store.checkAvailabilityOfRooms" />
           <FunctionImportMapping FunctionImportName="Members_Checked_Out_Rooms" FunctionName="virkcorp_adminModel.Store.Members_Checked_Out_Rooms">
             <ResultMapping>
               <ComplexTypeMapping TypeName="virkcorp_adminModel.Members_Checked_Out_Rooms_Result">
@@ -3172,6 +3194,36 @@
                 <ScalarProperty Name="Mode_Of_Pay" ColumnName="Mode_Of_Pay" />
                 <ScalarProperty Name="Amount" ColumnName="Amount" />
                 <ScalarProperty Name="Bar_Bill_Number" ColumnName="Bar_Bill_Number" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_WineBillingMode">
+            <EntityTypeMapping TypeName="virkcorp_adminModel.tbl_WineBillingMode">
+              <MappingFragment StoreEntitySet="tbl_WineBillingMode">
+                <ScalarProperty Name="Mode_Of_Pay" ColumnName="Mode_Of_Pay" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Wine_Bill_Number" ColumnName="Wine_Bill_Number" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_RoomBillingMode">
+            <EntityTypeMapping TypeName="virkcorp_adminModel.tbl_RoomBillingMode">
+              <MappingFragment StoreEntitySet="tbl_RoomBillingMode">
+                <ScalarProperty Name="Mode_Of_Pay" ColumnName="Mode_Of_Pay" />
+                <ScalarProperty Name="Amout" ColumnName="Amout" />
+                <ScalarProperty Name="Room_Bill_Number" ColumnName="Room_Bill_Number" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_MemberBillingMode">
+            <EntityTypeMapping TypeName="virkcorp_adminModel.tbl_MemberBillingMode">
+              <MappingFragment StoreEntitySet="tbl_MemberBillingMode">
+                <ScalarProperty Name="Mode_Of_Pay" ColumnName="Mode_Of_Pay" />
+                <ScalarProperty Name="Amout" ColumnName="Amout" />
+                <ScalarProperty Name="Mem_Bill_Number" ColumnName="Mem_Bill_Number" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

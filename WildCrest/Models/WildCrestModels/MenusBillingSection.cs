@@ -7,6 +7,9 @@ namespace WildCrest.Models.WildCrestModels
 {
     public class MenusBillingSection
     {
+        public string Cash_Payment { get; set; }
+        public string Paytm_Payment { get; set; }
+        public string Card_Payment { get; set; }
         public int Bill_Number { get; set; }
         public string Customer_Name { get; set; }
         public string Phone { get; set; }

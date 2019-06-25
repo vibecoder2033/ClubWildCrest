@@ -1,5 +1,24 @@
 ﻿@model WildCrest.Models.WildCrestModels.Profile
+@{
+    if (Model.Card_Payment == null)
+    {
+        Model.Card_Payment = "0.0";
+    }
 
+    if (Model.Cash_Payment == null)
+    {
+        Model.Cash_Payment = "0.0";
+    }
+
+    if (Model.Paytm_Payment == null)
+    {
+        Model.Paytm_Payment = "0.0";
+    }
+    if (Model.Cheque_Payment == null)
+    {
+        Model.Cheque_Payment = "0.0";
+    }
+}
 <style>
     td {
         padding: 5px;
@@ -146,10 +165,29 @@
                                         <input type="text" id="amt" readonly class="form-control">
                                     </div>
                                 </div>
+                                
                                 <div class="col-md-6 col-sm-6 form-profile-in">
                                     <div class="form-group">
-                                        <label class="control-label">Payment Mode :</label>
-                                        <input type="text" id="paymentMode" readonly class="form-control">
+                                        <label class="control-label">Cash :</label>
+                                        <input type="text" readonly value="@Model.Cash_Payment" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-6 form-profile-in">
+                                    <div class="form-group">
+                                        <label class="control-label">Paytm :</label>
+                                        <input type="text" readonly value="@Model.Paytm_Payment" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-6 form-profile-in">
+                                    <div class="form-group">
+                                        <label class="control-label">Card :</label>
+                                        <input type="text" readonly value="@Model.Card_Payment" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-6 form-profile-in">
+                                    <div class="form-group">
+                                        <label class="control-label">Cheque :</label>
+                                        <input type="text" readonly value="@Model.Cheque_Payment" class="form-control">
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-sm-6 form-profile-in">

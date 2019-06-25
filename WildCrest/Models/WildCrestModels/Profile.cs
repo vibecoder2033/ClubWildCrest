@@ -60,5 +60,10 @@ namespace WildCrest.Models.WildCrestModels
 
         public HttpPostedFileBase MemberPhoto { get; set; }
         public List<HttpPostedFileBase> MemberDocuments { get; set; }
+
+        public string Cash_Payment { get; set; }
+        public string Paytm_Payment { get; set; }
+        public string Card_Payment { get; set; }
+        public string Cheque_Payment { get; set; }
     }
 }

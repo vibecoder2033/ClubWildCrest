@@ -658,6 +658,31 @@ namespace WildCrest.Controllers.SuperAdmin
                     menusDetails.GST = data.GST;
                     menusDetails.PriceWithoutTax = data.PriceWithoutTax;
                 }
+
+                var billmode = context.tbl_BillingMode.Where(x => x.tbl_Bill_ID == id).ToList();
+
+                if (billmode != null && billmode.Count > 0)
+                {
+                    foreach (var Data in billmode)
+                    {
+                        switch (Data.Mode_Of_Pay)
+                        {
+                            case "Cash":
+                                menusDetails.Cash_Payment = Data.Amount.ToString();
+                                break;
+
+                            case "Paytm":
+                                menusDetails.Paytm_Payment = Data.Amount.ToString(); ;
+                                break;
+
+                            case "Card":
+                                menusDetails.Card_Payment = Data.Amount.ToString(); ;
+                                break;
+
+                        }
+
+                    }
+                }
                 menusDetails.Mode_Of_Payment = data.Mode_Of_Payment;
                 menusDetails.Customer_Name = data.Customer_Name;
                 menusDetails.Phone = data.Phone;

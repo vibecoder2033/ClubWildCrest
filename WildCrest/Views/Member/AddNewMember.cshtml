@@ -2,6 +2,27 @@
     #docPreview img {
         margin: 7px 7px 0px 0px;
     }
+     .pay_meth label span {
+    padding-left: 15px;
+}
+    .d-align-center label {
+    padding-top: 8px;
+}
+    .pay_meth {
+    margin-bottom: 10px;
+}
+    @@media(max-width:992px) and (min-width:768px) {
+        .md_mb_10 {
+            margin-bottom:10px;
+        }
+
+    }
+     @@media(max-width:1300px) and (min-width:768px) {
+            .d-align-center {
+    padding-right: 0px;
+}
+
+    }
 </style>
 <body class="fix-header card-no-border">
 
@@ -189,28 +210,78 @@
                                         </select>
                                     </div>
                                 </div>*@
+                            <div class="pay_meth">
+                                <label style="font-size: large;"><b>Amount Paid</b></label>
+                            </div>
+
+
                             <div class="row">
-                                <div class="col-md-6 col-sm-6">
-                                    <label>Amount Paid <span class="complusoryFields">*</span></label>
-                                    <input type="text" class="form-control floatNo requiredFields" id="amount" />
+                                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 md_mb_10">
+                                    <div class="row">
+                                        <div class="col-md-5 d-align-center d-flex">
+                                            <label><input type="checkbox" id="iscash"> <span>Cash</span></label>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <div class="input-group">
+                                                <div class="input-group-addon"><i class="fa fa-inr" aria-hidden="true" style="font-size: initial"></i></div>
+                                                <input type="text" class="form-control" id="amtCash" disabled="disabled">
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-md-6 col-sm-6" id="mode_pay">
-                                    <label>Mode of Payment :</label>
-                                    <select onchange="paymentMode();" class="form-control" id="paymentMode">
-                                        <option value="Cash">Cash</option>
-                                        <option value="Cheque">Cheque</option>
-                                        <option value="Card">Card</option>
-                                    </select>
+                                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 md_mb_10">
+                                    <div class="row">
+                                        <div class="col-md-5 d-align-center d-flex">
+                                            <label><input type="checkbox" id="ispaytm"> <span>Paytm</span></label>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <div class="input-group">
+                                                <div class="input-group-addon"><i class="fa fa-inr" aria-hidden="true" style="font-size: initial"></i></div>
+                                                <input type="text" class="form-control" id="amtPaytm" disabled="disabled">
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div id="cheque" style="display: none;" class="col-md-6 col-sm-6">
-                                    <label>Cheque No. <span class="complusoryFields">*</span></label>
-                                    <input type="text" class="form-control requiredFields" id="chequeNo" />
+                                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 md_mb_10">
+                                    <div class="row">
+                                        <div class="col-md-5 d-align-center d-flex">
+                                            <label><input type="checkbox" id="iscard"> <span>Card</span></label>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <div class="input-group">
+                                                <div class="input-group-addon"><i class="fa fa-inr" aria-hidden="true" style="font-size: initial"></i></div>
+                                                <input type="text" class="form-control" id="amtCard" disabled="disabled">
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div id="cheque1" style="display: none;" class="col-md-6 col-sm-6">
-                                    <label>Bank Name <span class="complusoryFields">*</span></label>
-                                    <input type="text" class="form-control requiredFields" id="bankName" />
+                                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 md_mb_10">
+                                    <div class="row">
+                                        <div class="col-md-5 d-align-center d-flex">
+                                            <label><input type="checkbox" id="ischeque"> <span>Cheque</span></label>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <div class="input-group">
+                                                <div class="input-group-addon"><i class="fa fa-inr" aria-hidden="true" style="font-size: initial"></i></div>
+                                                <input type="text" class="form-control" id="amtCheque" disabled="disabled">
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
 
+
+
+
+                            </div>
+                            <div class="row" id="cheque_details">
+                                <div class="col-md-6 col-sm-6" style="margin: 10px 0;">
+                                    <label>Cheque No. <span class="complusoryFields">*</span></label>
+                                    <input type="text" class="form-control requiredFields" id="chequeNo">
+                                </div>
+                                <div class="col-md-6 col-sm-6" style="margin: 10px 0;">
+                                    <label>Bank Name <span class="complusoryFields">*</span></label>
+                                    <input type="text" class="form-control requiredFields" id="bankName">
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-6 col-sm-6" style="margin: 10px 0;">
@@ -245,7 +316,37 @@
 </body>
 
 <script>
+    var planAmt = 0;
+    var gst = 0;
+    var amt = 0;
     $(document).ready(function () {
+        $("#cheque_details").hide();
+        $('#iscash').click(function () {
+            if ($(this).is(":checked"))
+                $("#amtCash").removeAttr("disabled");
+            else
+                $("#amtCash").val('').attr("disabled", "disabled");
+        });
+        $('#ispaytm').click(function () {
+            if ($(this).is(":checked"))
+                $("#amtPaytm").removeAttr("disabled");
+            else
+                $("#amtPaytm").val('').attr("disabled", "disabled");
+        });
+        $('#iscard').click(function () {
+            if ($(this).is(":checked"))
+                $("#amtCard").removeAttr("disabled");
+            else
+                $("#amtCard").val('').attr("disabled", "disabled");
+        });
+        $('#ischeque').click(function () {
+            if ($(this).is(":checked")) {
+                $("#amtCheque").removeAttr("disabled"); $("#cheque_details").show();
+            }
+            else {
+                $("#amtCheque").val('').attr("disabled", "disabled"); $("#cheque_details").hide();
+            }
+        });
         $('#DOB,#joiningDate').datepicker({
             changeMonth: true,
             changeYear: true,
@@ -337,10 +438,34 @@
         }
     });
 
-    $("#amount").focusout(function () {
-        var amt = $("#amount").val().trim();
-        var planAmt = 0;
-        var gst = 0;
+    //$("#amount").focusout(function () {
+    //    var amt = $("#amount").val().trim();
+
+    //    var planAmt = 0;
+    //    var gst = 0;
+    //    if (parseFloat(amt) > 0) {                          // Tax 18%
+    //        planAmt = ((parseFloat(amt) * 100) / 118).toFixed(2);
+    //        gst = (parseFloat(planAmt) * (18 / 100)).toFixed(2);
+
+    //        $("#pAmt").val(planAmt);
+    //        $("#Pgst").val(gst);
+    //    }
+    //    else {
+    //        $("#pAmt").val('0');
+    //        $("#Pgst").val('0');
+    //    }
+    //});
+    $("#amtCash").focusout(function () {
+        var amtCash = $("#amtCash").val().trim();
+        amtCash = (amtCash != "") ? amtCash : "0";
+        var amtPaytm = $("#amtPaytm").val().trim();
+        amtPaytm = (amtPaytm != "") ? amtPaytm : "0";
+        var amtCard = $("#amtCard").val().trim();
+        amtCard = (amtCard != "") ? amtCard : "0";
+        var amtCheque = $("#amtCheque").val().trim();
+        amtCheque = (amtCheque != "") ? amtCheque : "0";
+
+         amt = (parseFloat(amtCash) + parseFloat(amtPaytm) + parseFloat(amtCard) + parseFloat(amtCheque)).toFixed(2);
         if (parseFloat(amt) > 0) {                          // Tax 18%
             planAmt = ((parseFloat(amt) * 100) / 118).toFixed(2);
             gst = (parseFloat(planAmt) * (18 / 100)).toFixed(2);
@@ -353,7 +478,75 @@
             $("#Pgst").val('0');
         }
     });
+    $("#amtPaytm").focusout(function () {
+        var amtCash = $("#amtCash").val().trim();
+        amtCash = (amtCash != "") ? amtCash : "0";
+        var amtPaytm = $("#amtPaytm").val().trim();
+        amtPaytm = (amtPaytm != "") ? amtPaytm : "0";
+        var amtCard = $("#amtCard").val().trim();
+        amtCard = (amtCard != "") ? amtCard : "0";
+        var amtCheque = $("#amtCheque").val().trim();
+        amtCheque = (amtCheque != "") ? amtCheque : "0";
 
+         amt = (parseFloat(amtCash) + parseFloat(amtPaytm) + parseFloat(amtCard) + parseFloat(amtCheque)).toFixed(2);
+        if (parseFloat(amt) > 0) {                          // Tax 18%
+            planAmt = ((parseFloat(amt) * 100) / 118).toFixed(2);
+            gst = (parseFloat(planAmt) * (18 / 100)).toFixed(2);
+
+            $("#pAmt").val(planAmt);
+            $("#Pgst").val(gst);
+        }
+        else {
+            $("#pAmt").val('0');
+            $("#Pgst").val('0');
+        }
+    });
+    $("#amtCheque").focusout(function () {
+        var amtCash = $("#amtCash").val().trim();
+        amtCash = (amtCash != "") ? amtCash : "0";
+        var amtPaytm = $("#amtPaytm").val().trim();
+        amtPaytm = (amtPaytm != "") ? amtPaytm : "0";
+        var amtCard = $("#amtCard").val().trim();
+        amtCard = (amtCard != "") ? amtCard : "0";
+        var amtCheque = $("#amtCheque").val().trim();
+        amtCheque = (amtCheque != "") ? amtCheque : "0";
+
+         amt = (parseFloat(amtCash) + parseFloat(amtPaytm) + parseFloat(amtCard) + parseFloat(amtCheque)).toFixed(2);
+        if (parseFloat(amt) > 0) {                          // Tax 18%
+            planAmt = ((parseFloat(amt) * 100) / 118).toFixed(2);
+            gst = (parseFloat(planAmt) * (18 / 100)).toFixed(2);
+
+            $("#pAmt").val(planAmt);
+            $("#Pgst").val(gst);
+        }
+        else {
+            $("#pAmt").val('0');
+            $("#Pgst").val('0');
+        }
+    });
+    $("#amtCard").focusout(function () {
+        var amtCash = $("#amtCash").val().trim();
+        amtCash = (amtCash != "") ? amtCash : "0";
+        var amtPaytm = $("#amtPaytm").val().trim();
+        amtPaytm = (amtPaytm != "") ? amtPaytm : "0";
+        var amtCard = $("#amtCard").val().trim();
+        amtCard = (amtCard != "") ? amtCard : "0";
+        var amtCheque = $("#amtCheque").val().trim();
+        amtCheque = (amtCheque != "") ? amtCheque : "0";
+
+         amt = (parseFloat(amtCash) + parseFloat(amtPaytm) + parseFloat(amtCard) + parseFloat(amtCheque)).toFixed(2);
+        if (parseFloat(amt) > 0) {                          // Tax 18%
+            planAmt = ((parseFloat(amt) * 100) / 118).toFixed(2);
+            gst = (parseFloat(planAmt) * (18 / 100)).toFixed(2);
+
+            $("#pAmt").val(planAmt);
+            $("#Pgst").val(gst);
+        }
+        else {
+            $("#pAmt").val('0');
+            $("#Pgst").val('0');
+        }
+    });
     function paymentMode() {
         var mode = $("#paymentMode").val();
         if (mode == "Cheque") {
@@ -406,7 +599,7 @@
             //    $("#errorMessage").css("display", "block");
             //}
             //else {
-            if (mode == "Cheque" && (chequeNo == "" || bankName == "")) {
+            if ($('#ischeque').is(':checked') && (chequeNo == "" || bankName == "")) {
                 $(".preloader").css("display", "none");
                 bootbox.alert('Cheque no. & Bank Name are compulsory.');
                 return false;
@@ -414,10 +607,12 @@
             else {
 
                 var billingDet = JSON.stringify({
-                    Amount_Paid: amount,
                     Cheque_No: chequeNo,
-                    Mode_Of_Payment: mode,
-                    BankName: bankName
+                     BankName: bankName,
+                     paymentModeCash: $("#amtCash").val(),
+                     paymentModePaytm: $("#amtPaytm").val(),
+                     paymentModeCard: $("#amtCard").val(),
+                     paymentModeCheque: $("#amtCheque").val(),
                 });
                 var memberPic = $("#memPhoto")[0].files;
                 var _FormData = new FormData;
@@ -472,13 +667,13 @@
                         newWin = window.open("");
                         //==================================================================================
 
-                        var amt = $("#amount").val();
-                        var planAmt = 0;
-                        var gst = 0;
-                        if (parseFloat(amt) > 0) {                          // Tax 18%
-                            planAmt = ((parseFloat(amt) * 100) / 118).toFixed(2);
-                            gst = (parseFloat(planAmt) * (18 / 100)).toFixed(2);
-                        }
+                        //var amt = $("#amount").val();
+                        //var planAmt = 0;
+                        //var gst = 0;
+                        //if (parseFloat(amt) > 0) {                          // Tax 18%
+                        //    planAmt = ((parseFloat(amt) * 100) / 118).toFixed(2);
+                        //    gst = (parseFloat(planAmt) * (18 / 100)).toFixed(2);
+                        //}
 
                         var tbl = '';
                         tbl += "<center><p style='padding:0px;margin:0px;font-size:12px;'>Club Wild Crest";
@@ -507,7 +702,7 @@
 
                    '</tr>' +
                    '<tr style="font-size: 9px;">' +
-                   '<td style="padding: 5px 0;">Amount Paid : ₹ ' + $("#amount").val() + '</td>' +
+                   '<td style="padding: 5px 0;">Amount Paid : ₹ ' + amt + '</td>' +
                    '<td style="padding: 5px 0;"></td>' +
                    '</tr>' +
                    '</tbody></table>';
@@ -576,7 +771,7 @@
     //            url: "/Member/MembersDocumentsUpload",
     //            enctype: 'multipart/form-data',
     //            processData: false,
-    //            contentType: false               
+    //            contentType: false
 
     //        });
 
@@ -594,7 +789,7 @@
     //            $(".modal-dialog .modal-content .modal-footer .btn-default").hide();
     //        }
     //    }
-    //    else {                        
+    //    else {
     //        $(".preloader").css("display", "none");
     //        if (currentUserTypeLoggedin == 2) {
     //            bootbox.confirm("New Member created only after SuperAdmin Approval.", function (result) {
@@ -667,3 +862,4 @@
 
     // }
 </script>
+

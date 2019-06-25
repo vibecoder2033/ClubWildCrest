@@ -292,7 +292,7 @@ namespace WildCrest.Controllers.SuperAdmin
         }
 
         [HttpPost]
-        public JsonResult CloseOrder(int tableID, string paymentMode, string discount)
+        public JsonResult CloseOrder(int tableID, string discount, double paymentModeCash = 0.0, double paymentModePaytm = 0.0, double paymentModeCard = 0.0, double Balance = 0.0)
         {
             var gstPercentFromConfig = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["FoodGstPercent"]);
             double? gst = 0;
@@ -303,7 +303,7 @@ namespace WildCrest.Controllers.SuperAdmin
             {
                 var tableData = context.tbl_TablesForBooking.SingleOrDefault(w => w.ID == tableID);
                 menusData.Table_Status = null;
-                menusData.Mode_Of_Payment = paymentMode;
+                menusData.Mode_Of_Payment = null;
                 menusData.Discount = Convert.ToDouble(discount);
                 menusData.Billed_By = Convert.ToInt32(Request.Cookies["UserID"].Value);
                
@@ -319,6 +319,34 @@ namespace WildCrest.Controllers.SuperAdmin
                     gst = Math.Round((double)gst, 2);
                     menusData.GST = gst;
                     context.Entry(menusData).State = EntityState.Modified;
+                    context.SaveChanges();
+                }
+                if (paymentModeCash > 0)
+                {
+                    tbl_BillingMode model = new tbl_BillingMode();
+                    model.tbl_Bill_ID = menusData.Bill_Number;
+                    model.Amount = paymentModeCash - Balance;
+                    model.Mode_Of_Pay = "Cash";
+                    context.tbl_BillingMode.Add(model);
+                    context.SaveChanges();
+                }
+
+                if (paymentModePaytm > 0)
+                {
+                    tbl_BillingMode model = new tbl_BillingMode();
+                    model.tbl_Bill_ID = menusData.Bill_Number;
+                    model.Amount = paymentModePaytm;
+                    model.Mode_Of_Pay = "Paytm";
+                    context.tbl_BillingMode.Add(model);
+                    context.SaveChanges();
+                }
+                if (paymentModeCard > 0)
+                {
+                    tbl_BillingMode model = new tbl_BillingMode();
+                    model.tbl_Bill_ID = menusData.Bill_Number;
+                    model.Amount = paymentModeCard;
+                    model.Mode_Of_Pay = "Card";
+                    context.tbl_BillingMode.Add(model);
                     context.SaveChanges();
                 }
             }

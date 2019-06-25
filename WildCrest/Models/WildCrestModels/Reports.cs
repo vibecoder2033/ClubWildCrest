@@ -106,7 +106,12 @@ namespace WildCrest.Models.WildCrestModels
         public decimal Menus_Sale { get; set; }
         public decimal Menus_GST { get; set; }
         public decimal Menus_Discount { get; set; }
-        public decimal Menus_Total { get; set; }        
+        public decimal Menus_Total { get; set; }
+
+        public decimal Food_CardPay { get; set; }
+        public decimal Food_CashPay { get; set; }
+        public decimal Food_PaytmPay { get; set; }
+        public decimal Food_ChequePay { get; set; }
     }
 
     public class NonMenusGstReports
@@ -131,6 +136,11 @@ namespace WildCrest.Models.WildCrestModels
         public decimal Bar_GST { get; set; }
         public decimal Bar_Discount { get; set; }
         public decimal Bar_Total { get; set; }
+
+        public decimal Bar_CardPay { get; set; }
+        public decimal Bar_CashPay { get; set; }
+        public decimal Bar_PaytmPay { get; set; }
+        public decimal Bar_ChequePay { get; set; }
     }
 
     public class NonMenusBarReports
@@ -147,6 +157,10 @@ namespace WildCrest.Models.WildCrestModels
         public decimal Wine_Discount { get; set; }
         public decimal Wine_Total { get; set; }
 
+        public decimal Wine_CardPay { get; set; }
+        public decimal Wine_CashPay { get; set; }
+        public decimal Wine_PaytmPay { get; set; }
+        public decimal Wine_ChequePay { get; set; }
 
     }
 

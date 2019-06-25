@@ -144,6 +144,47 @@ namespace WildCrest.Controllers.SuperAdmin
                     bookingDet.Billing_DateTime = DateTime.Now;
                     context.Entry(bookingDet).State = EntityState.Modified;
                     context.SaveChanges();
+
+                    if ( model.paymentModeCash > 0)
+                    {
+                        tbl_RoomBillingMode Model = new tbl_RoomBillingMode();
+                        Model.Room_Bill_Number = model.Booking_ID;
+                        Model.Amout = model.paymentModeCash;
+                        Model.Mode_Of_Pay = "Cash";
+                        context.tbl_RoomBillingMode.Add(Model);
+                        context.SaveChanges();
+
+                    }
+                    if (model.paymentModePaytm > 0)
+                    {
+                        tbl_RoomBillingMode Model = new tbl_RoomBillingMode();
+                        Model.Room_Bill_Number = model.Booking_ID;
+                        Model.Amout = model.paymentModePaytm;
+                        Model.Mode_Of_Pay = "Paytm";
+                        context.tbl_RoomBillingMode.Add(Model);
+                        context.SaveChanges();
+
+                    }
+                    if (model.paymentModeCard > 0)
+                    {
+                        tbl_RoomBillingMode Model = new tbl_RoomBillingMode();
+                        Model.Room_Bill_Number = model.Booking_ID;
+                        Model.Amout = model.paymentModeCard;
+                        Model.Mode_Of_Pay = "Card";
+                        context.tbl_RoomBillingMode.Add(Model);
+                        context.SaveChanges();
+
+                    }
+                    if (model.paymentModeCheque > 0)
+                    {
+                        tbl_RoomBillingMode Model = new tbl_RoomBillingMode();
+                        Model.Room_Bill_Number = model.Booking_ID;
+                        Model.Amout = model.paymentModeCheque;
+                        Model.Mode_Of_Pay = "Cheque";
+                        context.tbl_RoomBillingMode.Add(Model);
+                        context.SaveChanges();
+
+                    }
                 }
             }
             List<RoomBooking_Details> stayData = new List<RoomBooking_Details>();

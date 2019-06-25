@@ -1130,6 +1130,31 @@ namespace WildCrest.Controllers.SuperAdmin
                     });
                 }
 
+                var billmode = context.tbl_BarBillingMode.Where(x => x.Bar_Bill_Number == id).ToList();
+
+                if (billmode!=null && billmode.Count>0)
+                {
+                    foreach(var Data in billmode)
+                    {
+                        switch (Data.Mode_Of_Pay)
+                        {
+                            case "Cash":
+                                menusDetails.Cash_Payment = Data.Amount.ToString();
+                                break;
+
+                            case "Paytm":
+                                menusDetails.Paytm_Payment = Data.Amount.ToString(); ;
+                                break;
+
+                            case "Card":
+                                menusDetails.Card_Payment = Data.Amount.ToString(); ;
+                                break;
+
+                        }
+                          
+                    }
+                }
+
                 menusDetails.GST = data.GST;
                 menusDetails.PriceWithoutTax = data.PriceWithoutTax;
                 menusDetails.Discount = data.Discount;
@@ -1799,7 +1824,7 @@ namespace WildCrest.Controllers.SuperAdmin
         }
 
         [HttpPost]
-        public JsonResult CloseOrder(int tableID, string paymentMode, string discount)
+        public JsonResult CloseOrder(int tableID, string discount, double paymentModeCash = 0.0, double paymentModePaytm = 0.0, double paymentModeCard = 0.0, double Balance= 0.0)
         {
             var date = DateTime.Today;
             string DateFormat = date.ToString(@"MM\/dd\/yyyy");
@@ -1808,13 +1833,43 @@ namespace WildCrest.Controllers.SuperAdmin
             {
                 var tableData = context.tbl_TablesForBooking.SingleOrDefault(w => w.ID == tableID);
                 menusData.Table_Status = null;
-                menusData.Mode_Of_Payment = paymentMode;
+                menusData.Mode_Of_Payment = null;
                 menusData.Discount = Convert.ToDouble(discount);
                 menusData.Billed_By = Convert.ToInt32(Request.Cookies["UserID"].Value);
                 context.Entry(menusData).State = EntityState.Modified;
                 tableData.Bar_Status = "closed";
                 context.Entry(tableData).State = EntityState.Modified;
                 context.SaveChanges();
+
+                if (paymentModeCash > 0)
+                {
+                    tbl_BarBillingMode model = new tbl_BarBillingMode();
+                    model.Bar_Bill_Number = menusData.Bill_Number;
+                    model.Amount = paymentModeCash - Balance;
+                    model.Mode_Of_Pay = "Cash";
+                    context.tbl_BarBillingMode.Add(model);
+                    context.SaveChanges();
+                }
+
+                if (paymentModePaytm > 0)
+                {
+                    tbl_BarBillingMode model = new tbl_BarBillingMode();
+                    model.Bar_Bill_Number = menusData.Bill_Number;
+                    model.Amount = paymentModePaytm;
+                    model.Mode_Of_Pay = "Paytm";
+                    context.tbl_BarBillingMode.Add(model);
+                    context.SaveChanges();
+                }
+                if (paymentModeCard > 0)
+                {
+                    tbl_BarBillingMode model = new tbl_BarBillingMode();
+                    model.Bar_Bill_Number = menusData.Bill_Number;
+                    model.Amount = paymentModeCard;
+                    model.Mode_Of_Pay = "Card";
+                    context.tbl_BarBillingMode.Add(model);
+                    context.SaveChanges();
+                }
+
             }
             
             

@@ -49,22 +49,22 @@
                     <td style="@stylecolor">
                         @i.Customer
                     </td>
-                    <td style="@stylecolor">@i.Check_In</td>
-                    <td style="@stylecolor">@i.Check_Out</td>
+                    <td style="@stylecolor">@String.Format("{0:dd/MM/yy}",Convert.ToDateTime(i.Check_In))</td>
+                    <td style="@stylecolor">@String.Format("{0:dd/MM/yy}", Convert.ToDateTime(i.Check_Out))</td>
                     <td style="@stylecolor">@i.Total</td>
                     <td style="@stylecolor">@i.AdvancedPayment</td>
                     <td style="@stylecolor">@i.Discount</td>
                     <td style="@stylecolor">@i.AmtToBePaid</td>
-                    <td style="@stylecolor">@i.Billing_DateTime</td>
+                    <td style="@stylecolor">@String.Format("{0:dd/MM/yy}",i.Billing_DateTime)</td>
                 </tr>
                 <script>
                     tbl += '<tr><td>@i.Bill_Number</td><td>@i.Customer</td>' +
-                    '<td>@i.Check_In</td>' +
-                '<td>@i.Check_Out</td>' +
+                    '<td>@String.Format("{0:dd/MM/yy}",Convert.ToDateTime(i.Check_In))</td>' +
+                '<td>@String.Format("{0:dd/MM/yy}", Convert.ToDateTime(i.Check_Out))</td>' +
                 '<td>@i.Total</td>' +
                 '<td>@i.AdvancedPayment</td>' +
-                '<td>@i.Discount</td>'+
-                '<td>@i.AmtToBePaid</td>'+
+                '<td>@i.Discount</td>' +
+                '<td>@i.AmtToBePaid</td>' +
                 '</tr>';
                 </script>
                 }
@@ -84,6 +84,7 @@
         $("#tbl_roomB").dataTable({ "order": [[2, "desc"]] });
     });
 
+   
     function PrintBill(bookingID) {
         $(".preloader").css("display", "block");
         $.ajax({

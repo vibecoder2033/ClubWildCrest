@@ -21,5 +21,10 @@ namespace WildCrest.Models.WildCrestModels
 
         public string F_Name { get; set; }
         public string L_Name { get; set; }
+
+        public double? paymentModeCash { get; set; }
+        public double? paymentModePaytm { get; set; }
+        public double? paymentModeCard { get; set; }
+        public double? paymentModeCheque { get; set; }
     }
 }

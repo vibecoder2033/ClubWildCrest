@@ -5,7 +5,6 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="65a26bd1f44145279a4409f223026546" Name="Diagram1">
-        <EntityTypeShape EntityType="virkcorp_adminModel.sysdiagram" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="virkcorp_adminModel.tbl_BarBillingDetailsWithBillNo" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="virkcorp_adminModel.tbl_BarBillingSection" Width="1.5" PointX="12.75" PointY="13.75" IsExpanded="true" />
         <EntityTypeShape EntityType="virkcorp_adminModel.tbl_BarInventory" Width="1.5" PointX="13" PointY="1.125" IsExpanded="true" />
@@ -82,6 +81,9 @@
         <EntityTypeShape EntityType="virkcorp_adminModel.tbl_EntryMember_Billing" Width="1.5" PointX="11.375" PointY="23.75" />
         <EntityTypeShape EntityType="virkcorp_adminModel.tbl_BillingMode" Width="1.5" PointX="24.375" PointY="4.75" />
         <EntityTypeShape EntityType="virkcorp_adminModel.tbl_BarBillingMode" Width="1.5" PointX="17.375" PointY="24.75" />
+        <EntityTypeShape EntityType="virkcorp_adminModel.tbl_WineBillingMode" Width="1.5" PointX="19.375" PointY="24.75" />
+        <EntityTypeShape EntityType="virkcorp_adminModel.tbl_RoomBillingMode" Width="1.5" PointX="25.375" PointY="7.75" />
+        <EntityTypeShape EntityType="virkcorp_adminModel.tbl_MemberBillingMode" Width="1.5" PointX="7.375" PointY="25.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

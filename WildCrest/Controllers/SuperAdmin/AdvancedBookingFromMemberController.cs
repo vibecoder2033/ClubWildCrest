@@ -391,23 +391,23 @@ namespace WildCrest.Controllers.SuperAdmin
                     foreach (var i in data)
                     {
                         var prf = context.tbl_Profile.SingleOrDefault(b => b.ID == i.UserID);
-                        bookedRoomsBills.Add(new RoomBooking()
-                        {
-                            Booking_ID = i.Booking_ID,
-                            Check_In = i.Check_In,
-                            Check_Out = i.Check_Out,
-                            Customer = prf != null ? (prf.F_Name + " " + ((string.IsNullOrEmpty(prf.L_Name)) ? "" : prf.L_Name)) : "",
-                            UserID = i.UserID,
-                            //Total = i.Amount + i.GST,
-                            Total = i.Amount,
-                            AmtToBePaid = i.AmtToBePaid,
-                            Bill_Number = i.Bill_Number,
-                            Discount = i.Discount,
-                            AdvancedPayment = i.AdvancedPayment,
-                            GST = i.GST,
-                            Amount = i.Amount,
-                            Mode_Of_Payment=i.Mode_Of_Payment,
-                            Billing_DateTime=i.Billing_DateTime
+                    bookedRoomsBills.Add(new RoomBooking()
+                    {
+                        Booking_ID = i.Booking_ID,
+                        Check_In = i.Check_In,
+                        Check_Out = i.Check_Out,
+                        Customer = prf != null ? (prf.F_Name + " " + ((string.IsNullOrEmpty(prf.L_Name)) ? "" : prf.L_Name)) : "",
+                        UserID = i.UserID,
+                        //Total = i.Amount + i.GST,
+                        Total = i.Amount,
+                        AmtToBePaid = i.AmtToBePaid,
+                        Bill_Number = i.Bill_Number,
+                        Discount = i.Discount,
+                        AdvancedPayment = i.AdvancedPayment,
+                        GST = i.GST,
+                        Amount = i.Amount,
+                        Mode_Of_Payment = i.Mode_Of_Payment,
+                        Billing_DateTime = i.Billing_DateTime
                         });
                         //finaltotalVal += i.Amount - i.Discount;
                         finaltotalVal += i.Amount - i.Discount - i.GST;

@@ -11,6 +11,12 @@ z-index: 9999;
 background: url('/bxSlider/images/bx_loader.gif') 50% 50% no-repeat rgb(249,249,249,0.44);
 opacity: .8;
 }*/
+      .d-align-center label {
+    padding-top: 8px;
+}
+.pay_meth label span {
+    padding-left: 15px;
+}
     .card-block-new .icons_main_div {
         overflow: hidden;
     }
@@ -879,14 +885,14 @@ opacity: .8;
                 </div>
                 
                 
-                <div class="form-group">
+                @*<div class="form-group">
                     <label>Amount given by Customer</label>
                     <div class="input-group">
                         <div class="input-group-addon"><i class="fa fa-inr" aria-hidden="true" style="font-size: initial"></i></div>
                         <input type="text" class="form-control" id="customer_Amt" />
                     </div>
-                </div>
-                    <div class="form-group">
+                </div>*@
+                    @*<div class="form-group">
                         <label>Mode Of Payment</label>
                         <div class="input-group">
                             <div class="input-group-addon"><i class="fa fa-money" aria-hidden="true" style="font-size: initial"></i></div>
@@ -896,7 +902,50 @@ opacity: .8;
                                 <option value="Card">Card</option>
                             </select>
                         </div>
+                    </div>*@
+                <div class="form-group pay_meth">
+                    <label>Amount to be pay:<span id="paidAmount" style="color:forestgreen;font-weight: 500;"></span></label>
+                    <div class="row">
+                        <div class="col-md-3 d-align-center d-flex">
+                            <label><input type="checkbox" id="iscash"> <span>Cash</span></label>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="input-group">
+                                <div class="input-group-addon"><i class="fa fa-inr" aria-hidden="true" style="font-size: initial"></i></div>
+                                <input type="text" class="form-control" id="customer_Amt_Cash" disabled="disabled" />
+                            </div>
+                        </div>
+
+
                     </div>
+
+                </div>
+                <div class="form-group pay_meth">
+                    <div class="row">
+                        <div class="col-md-3 d-align-center d-flex">
+                            <label><input type="checkbox" id="ispaytm"> <span>Paytm</span></label>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="input-group">
+                                <div class="input-group-addon"><i class="fa fa-inr" aria-hidden="true" style="font-size: initial"></i></div>
+                                <input type="text" class="form-control" id="customer_Amt_Paytm" disabled="disabled" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group pay_meth">
+                    <div class="row">
+                        <div class="col-md-3 d-align-center d-flex">
+                            <label><input type="checkbox" id="iscard"> <span>Card</span></label>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="input-group">
+                                <div class="input-group-addon"><i class="fa fa-inr" aria-hidden="true" style="font-size: initial"></i></div>
+                                <input type="text" class="form-control" id="customer_Amt_Card" disabled="disabled" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                     <div class="form-group">
                         <label>Balance</label>
@@ -940,6 +989,24 @@ opacity: .8;
         });
     }
     $(document).ready(function () {
+        $('#iscash').click(function () {
+            if ($(this).is(":checked"))
+                $("#customer_Amt_Cash").removeAttr("disabled");
+            else
+                $("#customer_Amt_Cash").val('').attr("disabled", "disabled");
+        });
+        $('#ispaytm').click(function () {
+            if ($(this).is(":checked"))
+                $("#customer_Amt_Paytm").removeAttr("disabled");
+            else
+                $("#customer_Amt_Paytm").val('').attr("disabled", "disabled");
+        });
+        $('#iscard').click(function () {
+            if ($(this).is(":checked"))
+                $("#customer_Amt_Card").removeAttr("disabled");
+            else
+                $("#customer_Amt_Card").val('').attr("disabled", "disabled");
+        });
         //getUsers();
         //$(".loader_gif").css("display", "block");
        
@@ -1031,7 +1098,7 @@ opacity: .8;
             }
         });
 
-        $("#customer_Amt,#discount").on("keypress keyup blur", function (event) {
+        $("#customer_Amt_Cash,#customer_Amt_Paytm,#customer_Amt_Card,#discount").on("keypress keyup blur", function (event) {
             $(this).val($(this).val().replace(/[^0-9\.]/g, ''));
             if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
                 event.preventDefault();
@@ -1729,28 +1796,42 @@ opacity: .8;
     }
 
     function close_order_Modal() {
-        $('#customer_Amt').val('');
+        $('#customer_Amt_Cash,#customer_Amt_Card,#customer_Amt_Paytm').val('');
+        $('#customer_Amt_Cash,#customer_Amt_Card,#customer_Amt_Paytm').attr('disabled', 'disabled');
         $('#balance').val('');
         $("#TableID").val("0");
         $("#discount").val("0");
         $('#close_order').modal('hide');
     }
 
+    //function closeOrder() {
+    //    if($("#TableID").val()!=null && $("#TableID").val()!=undefined && $("#customer_Amt").val().trim()!="" && $("#discount").val().trim()!=""){
+    //        $.ajax({
+    //            type: "post",
+    //            data: JSON.stringify({ tableID:$("#TableID").val(),paymentMode:$("#paymentMode").val(),discount:$("#discount").val() }),
+    //            url: "/Wine/CloseOrder",
+    //            contentType: "application/json;charset=utf-8",
+    //            datatype: "json",
+    //            success: function (response) {
+    //                window.location.href = "";                    
+    //            }
+    //        });
+    //    }
+    //}
     function closeOrder() {
-        if($("#TableID").val()!=null && $("#TableID").val()!=undefined && $("#customer_Amt").val().trim()!="" && $("#discount").val().trim()!=""){
+        if (($("#TableID").val() != null && $("#TableID").val() != undefined && $("#discount").val().trim() != "") && ($("#customer_Amt_Cash").val().trim() != "" || $("#customer_Amt_Paytm").val().trim() != "" || $("#customer_Amt_Card").val().trim() != "")) {
             $.ajax({
                 type: "post",
-                data: JSON.stringify({ tableID:$("#TableID").val(),paymentMode:$("#paymentMode").val(),discount:$("#discount").val() }),
+                data: JSON.stringify({ tableID: $("#TableID").val(), discount: $("#discount").val(), paymentModeCash: $("#customer_Amt_Cash").val(), paymentModePaytm: $("#customer_Amt_Paytm").val(), paymentModeCard: $("#customer_Amt_Card").val(), Balance: $("#balance").val() }),
                 url: "/Wine/CloseOrder",
                 contentType: "application/json;charset=utf-8",
                 datatype: "json",
                 success: function (response) {
-                    window.location.href = "";                    
+                    window.location.href = "";
                 }
             });
         }
     }
-
     function viewCloseOrder(tableid) {
         $.ajax({
             type: "post",
@@ -1761,6 +1842,7 @@ opacity: .8;
             success: function (response) {
                 if(response.Bill_Number!=0){
                     $("#billing_Amt").val(response.Price);
+                    $('#paidAmount').html(response.Price);
                     $("#TableID").val(tableid)
                     $('#close_order').modal('show');
                 }
@@ -1786,19 +1868,111 @@ opacity: .8;
         }
     });
 
+    //$("#discount").focusout(function () {
+    //    var customer_Amt = $("#customer_Amt").val().trim();
+    //    var discount = $("#discount").val().trim();
+    //    discount = (discount!="")?discount:"0";
+    //    if(customer_Amt!=""){
+    //        var billing_Amt = $("#billing_Amt").val();
+    //        var balance=(parseFloat(customer_Amt)-(parseFloat(billing_Amt)-parseFloat(discount))).toFixed(2);
+    //        $("#balance").val(balance);
+    //    }
+    //    else{
+    //        $("#balance").val('');
+    //    }
+    //});
     $("#discount").focusout(function () {
-        var customer_Amt = $("#customer_Amt").val().trim();
+        var amtCash = $("#customer_Amt_Cash").val().trim();
+        amtCash = (amtCash != "") ? amtCash : "0";
+        var amtPaytm = $("#customer_Amt_Paytm").val().trim();
+        amtPaytm = (amtPaytm != "") ? amtPaytm : "0";
+        var amtCard = $("#customer_Amt_Card").val().trim();
+        amtCard = (amtCard != "") ? amtCard : "0";
         var discount = $("#discount").val().trim();
-        discount = (discount!="")?discount:"0";
-        if(customer_Amt!=""){
-            var billing_Amt = $("#billing_Amt").val();
-            var balance=(parseFloat(customer_Amt)-(parseFloat(billing_Amt)-parseFloat(discount))).toFixed(2);
-            $("#balance").val(balance);
+        discount = (discount != "") ? discount : "0";
+        var billing_Amt = $("#billing_Amt").val();
+        var finalBalance = (parseFloat(billing_Amt) - parseFloat(discount)).toFixed(2);
+        $('#paidAmount').html(finalBalance);
+        if (amtCash != "") {
+            var balance = (parseFloat(amtCash) + parseFloat(amtPaytm) + parseFloat(amtCard) - finalBalance).toFixed(2);
         }
-        else{
+        if (balance >= 0) {
+            $("#balance").val(balance);
+        } else {
+
             $("#balance").val('');
+
         }
     });
+    $("#customer_Amt_Cash").focusout(function () {
+
+        var amtCash = $("#customer_Amt_Cash").val().trim();
+        amtCash = (amtCash != "") ? amtCash : "0";
+        var amtPaytm = $("#customer_Amt_Paytm").val().trim();
+        amtPaytm = (amtPaytm != "") ? amtPaytm : "0";
+        var amtCard = $("#customer_Amt_Card").val().trim();
+        amtCard = (amtCard != "") ? amtCard : "0";
+        var discount = $("#discount").val().trim();
+        discount = (discount != "") ? discount : "0";
+        var billing_Amt = $("#billing_Amt").val();
+        var finalBalance = (parseFloat(billing_Amt) - parseFloat(discount)).toFixed(2);
+        if (amtCash != "") {
+            var balance = (parseFloat(amtCash) + parseFloat(amtPaytm) + parseFloat(amtCard) - finalBalance).toFixed(2);
+        }
+        if (balance >= 0) {
+            $("#balance").val(balance);
+        } else {
+
+            $("#balance").val('');
+
+        }
+    });
+    $("#customer_Amt_Paytm").focusout(function () {
+        var amtCash = $("#customer_Amt_Cash").val().trim();
+        amtCash = (amtCash != "") ? amtCash : "0";
+        var amtPaytm = $("#customer_Amt_Paytm").val().trim();
+        amtPaytm = (amtPaytm != "") ? amtPaytm : "0";
+        var amtCard = $("#customer_Amt_Card").val().trim();
+        amtCard = (amtCard != "") ? amtCard : "0";
+        var discount = $("#discount").val().trim();
+        discount = (discount != "") ? discount : "0";
+        var billing_Amt = $("#billing_Amt").val();
+        var finalBalance = (parseFloat(billing_Amt) - parseFloat(discount)).toFixed(2);
+        if (amtCash != "") {
+            var balance = (parseFloat(amtCash) + parseFloat(amtPaytm) + parseFloat(amtCard) - finalBalance).toFixed(2);
+        }
+        if (balance >= 0) {
+            $("#balance").val(balance);
+        } else {
+
+            $("#balance").val('');
+
+        }
+    });
+    $("#customer_Amt_Card").focusout(function () {
+        var amtCash = $("#customer_Amt_Cash").val().trim();
+        amtCash = (amtCash != "") ? amtCash : "0";
+        var amtPaytm = $("#customer_Amt_Paytm").val().trim();
+        amtPaytm = (amtPaytm != "") ? amtPaytm : "0";
+        var amtCard = $("#customer_Amt_Card").val().trim();
+        amtCard = (amtCard != "") ? amtCard : "0";
+        var discount = $("#discount").val().trim();
+        discount = (discount != "") ? discount : "0";
+        var billing_Amt = $("#billing_Amt").val();
+        var finalBalance = (parseFloat(billing_Amt) - parseFloat(discount)).toFixed(2);
+        if (amtCash != "") {
+            var balance = (parseFloat(amtCash) + parseFloat(amtPaytm) + parseFloat(amtCard) - finalBalance).toFixed(2);
+        }
+        if (balance >= 0) {
+            $("#balance").val(balance);
+        } else {
+
+            $("#balance").val('');
+
+        }
+    });
+
+
 
     function Save_PrintBill() {
         var txt_Food = $("#item_name_in_view").val().trim();
