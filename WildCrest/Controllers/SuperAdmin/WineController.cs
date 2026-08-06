@@ -1532,7 +1532,7 @@ namespace WildCrest.Controllers.SuperAdmin
             var date = DateTime.Today;
             string currentDate = date.ToString(@"MM\/dd\/yyyy");
             
-            var getdata = context.Database.SqlQuery<TablesForBooking>("sp_WineOrderTable").ToList();
+            var getdata = TablesForBooking.SortByTableNo(context.Database.SqlQuery<TablesForBooking>("sp_WineOrderTable"));
 
            /* var data = context.tbl_TablesForBooking.ToList();
             List<TablesForBooking> tblList = new List<TablesForBooking>();
